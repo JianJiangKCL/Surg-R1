@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1224" height="1080" viewBox="0 0 1224 1080" role="img" aria-label="Surg-R1 Demo Video Poster">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0b1f4d" />
+      <stop offset="100%" stop-color="#155eef" />
+    </linearGradient>
+  </defs>
+  <rect width="1224" height="1080" fill="url(#bg)" />
+  <g fill="#ffffff" opacity="0.9">
+    <rect x="72" y="72" width="1080" height="936" rx="28" ry="28" fill="none" stroke="#ffffff" stroke-width="3" opacity="0.45"/>
+    <text x="612" y="420" text-anchor="middle" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="74" font-weight="700">Surg-R1 Demo</text>
+    <text x="612" y="500" text-anchor="middle" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="36" opacity="0.88">Hierarchical Surgical Reasoning Workflow</text>
+  </g>
+  <g>
+    <circle cx="612" cy="640" r="78" fill="#ffffff" opacity="0.95"/>
+    <polygon points="588,600 588,680 654,640" fill="#155eef"/>
+  </g>
+  <text x="612" y="760" text-anchor="middle" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="30" fill="#dbe8ff">Click to Play</text>
+</svg>

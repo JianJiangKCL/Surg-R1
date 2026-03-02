@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Surg-R1 | Project Homepage</title>
+    <meta
+      name="description"
+      content="Surg-R1: Hierarchical 3-level Reasoning for Surgical Scene Understanding."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="hero">
+      <div class="container">
+        <p class="tag">Nature Machine Intelligence Submission</p>
+        <h1>Surg-R1</h1>
+        <p class="subtitle">
+          Hierarchical 3-level Reasoning for Surgical Scene Understanding
+        </p>
+        <p class="summary">
+          Surg-R1 is a surgical vision-language model with hierarchical
+          chain-of-thought reasoning. It unifies perceptual grounding,
+          relational understanding, and contextual reasoning across six surgical
+          AI tasks and thirteen datasets.
+        </p>
+        <div class="cta-row">
+          <a href="#demo" class="btn btn-primary">Watch Demo</a>
+          <a href="#overview" class="btn btn-secondary">Project Overview</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section id="demo" class="section">
+        <div class="container">
+          <h2>Software Demo Video</h2>
+          <p class="section-text">
+            Demonstration of the Surg-R1 software workflow and interactive
+            reasoning capability in surgical scene analysis.
+          </p>
+          <div class="video-card">
+            <video
+              controls
+              preload="metadata"
+              playsinline
+              class="demo-video"
+              poster="assets/images/video-poster.svg"
+            >
+              <source src="assets/videos/surgr1-demo-web.mp4" type="video/mp4" />
+              Your browser does not support HTML5 video playback.
+            </video>
+          </div>
+        </div>
+      </section>
+
+      <section id="overview" class="section section-muted">
+        <div class="container">
+          <h2>Project Overview</h2>
+          <div class="grid">
+            <article class="card">
+              <h3>Core Idea</h3>
+              <p>
+                We introduce a three-level reasoning hierarchy for surgical
+                scene interpretation: perceptual grounding, relational
+                understanding, and contextual reasoning.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Training Pipeline</h3>
+              <p>
+                A four-stage pipeline combines supervised fine-tuning,
+                surgery-aware cold-start reasoning supervision, GRPO-based
+                reinforcement learning, and iterative refinement.
+              </p>
+            </article>
+            <article class="card">
+              <h3>Evaluation Scope</h3>
+              <p>
+                The model is evaluated on 13 datasets (7 public + 6 external)
+                covering instrument localization, VQA, triplet recognition,
+                phase/action recognition, and CVS assessment.
+              </p>
+            </article>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container">
+        <p>
+          © 2026 Surg-R1 Project. This page is intended for academic
+          demonstration and communication.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
