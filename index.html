@@ -67,65 +67,14 @@
       <section id="demo" class="section">
         <div class="container">
           <h2 class="section-title">Software Demo</h2>
-          <p class="section-desc">A real-time surgical video analysis system built on Surg-R1, demonstrating frame-level perception and window-level reasoning with automatic contradiction resolution.</p>
+          <p class="section-desc">This demo shows a real-time surgical video analysis system built on top of Surg-R1. Surg-R1 performs per-frame perception (phase recognition, action description, tool localization), and its outputs are cascaded into a window-level synthesizer that resolves intra-frame and inter-frame contradictions to produce temporally coherent surgical narratives.</p>
           <div class="video-wrapper">
             <video controls preload="metadata" playsinline class="demo-video">
               <source src="assets/videos/surgr1-demo-web.mp4" type="video/mp4" />
               Your browser does not support HTML5 video.
             </video>
           </div>
-
-          <!-- Pipeline explanation -->
-          <div class="pipeline-explain">
-            <h3>Cascaded Two-Level Analysis Pipeline</h3>
-            <p>The demo showcases a <strong>cascaded</strong> architecture for laparoscopic cholecystectomy video analysis. Surg-R1's frame-level outputs are not used in isolation — they are fed directly into Gemini as structured input for window-level synthesis. The two stages form a sequential pipeline, not parallel independent systems.</p>
-
-            <div class="pipeline-flow">
-              <div class="pipe-node">
-                <div class="pipe-icon"><i class="fa-solid fa-image"></i></div>
-                <div class="pipe-body">
-                  <h4>Stage 1: Frame-Level Perception <span class="pipe-tag">Surg-R1</span></h4>
-                  <p>Every 3 seconds, Surg-R1 independently analyzes each sampled frame with three structured queries: <strong>surgical phase recognition</strong>, <strong>action description</strong>, and <strong>tool localization with bounding boxes</strong>. Each frame is processed without temporal context, producing raw per-frame annotations for phase, action, and instrument positions.</p>
-                </div>
-              </div>
-              <div class="pipe-arrow">
-                <i class="fa-solid fa-arrow-down"></i>
-                <span class="pipe-arrow-label">All R1 outputs (phase + action + tools) forwarded as input</span>
-              </div>
-              <div class="pipe-node">
-                <div class="pipe-icon"><i class="fa-solid fa-layer-group"></i></div>
-                <div class="pipe-body">
-                  <h4>Stage 2: Window-Level Synthesis <span class="pipe-tag">Gemini</span></h4>
-                  <p>Every 15-second window, Gemini receives four types of input: <strong>(1)</strong> formatted R1 frame annotations (phase, action, and tool detections for each frame), <strong>(2)</strong> sampled images from the window (up to 10 frames), <strong>(3)</strong> historical context (global phase progression + recent 3 window summaries), and <strong>(4)</strong> dynamic phase constraints injected based on surgical history. Gemini cross-references R1's structured annotations against its own visual understanding of the images, resolves contradictions, and outputs a unified narrative summary with a phase label and structured clinical metadata.</p>
-                </div>
-              </div>
-            </div>
-
-            <div class="design-note">
-              <i class="fa-solid fa-link"></i>
-              <p><strong>Key design principle:</strong> R1's outputs serve as Gemini's input, not as independent results. R1's tool detection is generally accurate and the prompt instructs Gemini to incorporate it. For phase recognition, however, R1 lacks cross-window context, so Gemini re-evaluates R1's phase predictions against the full surgical timeline. R1's perception is never discarded — it is validated and refined through Gemini's temporally-aware second pass.</p>
-            </div>
-
-            <h3>Resolving Contradictions</h3>
-            <p>Because Surg-R1 processes each frame independently, its per-frame predictions inevitably contain inconsistencies that must be resolved at the window level. The system addresses two types of contradictions:</p>
-
-            <div class="contra-grid">
-              <div class="contra-card">
-                <div class="contra-header">
-                  <i class="fa-solid fa-arrows-left-right"></i>
-                  <h4>Intra-Window Contradiction</h4>
-                </div>
-                <p>Frames within the same 15-second window may disagree on the surgical phase. For example, 3 of 5 frames might predict "GallbladderDissection" while 2 predict "CleaningCoagulation." Gemini receives all R1 frame annotations alongside the actual images, performs consistency analysis across the phase distribution, and determines the dominant phase by jointly weighing R1's predictions and its own visual evidence.</p>
-              </div>
-              <div class="contra-card">
-                <div class="contra-header">
-                  <i class="fa-solid fa-timeline"></i>
-                  <h4>Inter-Window Contradiction</h4>
-                </div>
-                <p>Since R1 has no memory across windows, it may predict early-stage phases (e.g., "GallbladderDissection") even late in surgery. Gemini prevents such regressions through three mechanisms: a <strong>global phase history</strong> that persistently tracks all phases ever reached (surviving beyond the sliding window), <strong>dynamic constraints</strong> injected into the prompt (e.g., after "GallbladderPackaging," only "CleaningCoagulation" is permitted), and a <strong>clinically-grounded phase transition table</strong> that defines all valid state transitions for laparoscopic cholecystectomy.</p>
-              </div>
-            </div>
-          </div>
+          <p class="demo-detail-link"><a href="demo-pipeline.html"><i class="fa-solid fa-arrow-right"></i> Technical details of the analysis pipeline</a></p>
 
         </div>
       </section>

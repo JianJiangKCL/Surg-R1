@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Analysis Pipeline — Surg-R1</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <nav class="topnav">
+      <div class="container nav-inner">
+        <a href="index.html" class="nav-brand">Surg-R1</a>
+        <div class="nav-links">
+          <a href="index.html">Home</a>
+          <a href="index.html#demo">Demo</a>
+          <a href="index.html#results">Results</a>
+          <a href="index.html#authors">Team</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="section">
+      <div class="container">
+        <p class="back-link"><a href="index.html#demo"><i class="fa-solid fa-arrow-left"></i> Back to homepage</a></p>
+
+        <h1 class="page-title">Demo Analysis Pipeline</h1>
+        <p class="page-subtitle">Technical details of the cascaded two-level architecture used in the Surg-R1 software demo.</p>
+
+        <div class="pipeline-explain">
+          <h3>Cascaded Two-Level Architecture</h3>
+          <p>The system processes laparoscopic cholecystectomy videos through two sequential stages. Surg-R1's frame-level outputs are fed directly into a window-level synthesizer as structured input — the two stages form a cascade, not parallel independent systems.</p>
+
+          <div class="pipeline-flow">
+            <div class="pipe-node">
+              <div class="pipe-icon"><i class="fa-solid fa-image"></i></div>
+              <div class="pipe-body">
+                <h4>Stage 1: Frame-Level Perception <span class="pipe-tag">Surg-R1</span></h4>
+                <p>Every 3 seconds, Surg-R1 independently analyzes each sampled frame with three structured queries: <strong>surgical phase recognition</strong>, <strong>action description</strong>, and <strong>tool localization with bounding boxes</strong>. Each frame is processed without temporal context, producing raw per-frame annotations.</p>
+              </div>
+            </div>
+            <div class="pipe-arrow">
+              <i class="fa-solid fa-arrow-down"></i>
+              <span class="pipe-arrow-label">All R1 outputs (phase + action + tools) forwarded as input</span>
+            </div>
+            <div class="pipe-node">
+              <div class="pipe-icon"><i class="fa-solid fa-layer-group"></i></div>
+              <div class="pipe-body">
+                <h4>Stage 2: Window-Level Synthesis <span class="pipe-tag">Gemini</span></h4>
+                <p>Every 15-second window, the synthesizer receives four types of input: <strong>(1)</strong> formatted R1 frame annotations (phase, action, and tool detections), <strong>(2)</strong> sampled images from the window (up to 10 frames), <strong>(3)</strong> historical context (global phase progression + recent 3 window summaries), and <strong>(4)</strong> dynamic phase constraints injected based on surgical history. It cross-references R1's annotations against its own visual understanding, resolves contradictions, and outputs a unified narrative summary with structured clinical metadata.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="design-note">
+            <i class="fa-solid fa-link"></i>
+            <p><strong>Key design principle:</strong> R1's outputs serve as the synthesizer's input, not as independent results. R1's tool detection is generally accurate and is directly incorporated. For phase recognition, R1 lacks cross-window context, so the synthesizer re-evaluates R1's phase predictions against the full surgical timeline. R1's perception is never discarded — it is validated and refined through a temporally-aware second pass.</p>
+          </div>
+
+          <h3>Resolving Contradictions</h3>
+          <p>Because Surg-R1 processes each frame independently, its per-frame predictions inevitably contain inconsistencies that must be resolved at the window level.</p>
+
+          <div class="contra-grid">
+            <div class="contra-card">
+              <div class="contra-header">
+                <i class="fa-solid fa-arrows-left-right"></i>
+                <h4>Intra-Window Contradiction</h4>
+              </div>
+              <p>Frames within the same 15-second window may disagree on the surgical phase. For example, 3 of 5 frames might predict "GallbladderDissection" while 2 predict "CleaningCoagulation." The synthesizer receives all R1 frame annotations alongside the actual images, performs consistency analysis across the phase distribution, and determines the dominant phase by jointly weighing R1's predictions and its own visual evidence.</p>
+            </div>
+            <div class="contra-card">
+              <div class="contra-header">
+                <i class="fa-solid fa-timeline"></i>
+                <h4>Inter-Window Contradiction</h4>
+              </div>
+              <p>Since R1 has no memory across windows, it may predict early-stage phases even late in surgery. The synthesizer prevents regressions through three mechanisms: a <strong>global phase history</strong> that persistently tracks all phases ever reached, <strong>dynamic constraints</strong> injected into the prompt (e.g., after "GallbladderPackaging," only "CleaningCoagulation" is permitted), and a <strong>clinically-grounded phase transition table</strong> that defines all valid state transitions for laparoscopic cholecystectomy.</p>
+            </div>
+          </div>
+
+          <h3>Phase Transition Rules</h3>
+          <p>The system enforces a clinically-defined state machine for laparoscopic cholecystectomy phases:</p>
+          <div class="table-wrapper">
+            <table class="phase-table">
+              <thead>
+                <tr><th>Current Phase</th><th>Allowed Transitions</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Preparation</td><td>Calot Triangle Dissection, Gallbladder Retraction</td></tr>
+                <tr><td>Calot Triangle Dissection</td><td>Clipping &amp; Cutting, Gallbladder Retraction, Preparation</td></tr>
+                <tr><td>Clipping &amp; Cutting</td><td>Gallbladder Dissection, Calot Triangle Dissection</td></tr>
+                <tr><td>Gallbladder Dissection</td><td>Cleaning &amp; Coagulation, Gallbladder Retraction, Clipping &amp; Cutting</td></tr>
+                <tr><td>Gallbladder Retraction</td><td>Calot Triangle Dissection, Gallbladder Dissection, Cleaning &amp; Coagulation</td></tr>
+                <tr><td>Cleaning &amp; Coagulation</td><td>Gallbladder Packaging, Gallbladder Dissection</td></tr>
+                <tr><td>Gallbladder Packaging</td><td>Cleaning &amp; Coagulation only</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-inner">
+        <p>&copy; 2026 Surg-R1 Project &middot; Shanghai Jiao Tong University</p>
+        <div class="footer-links">
+          <a href="https://github.com/JianJiangKCL/Surg-R1" target="_blank"><i class="fa-brands fa-github"></i></a>
+          <a href="mailto:yban@sjtu.edu.cn"><i class="fa-solid fa-envelope"></i></a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

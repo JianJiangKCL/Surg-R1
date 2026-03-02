@@ -549,6 +549,89 @@ h1 {
   color: var(--accent);
 }
 
+/* ===== Demo Detail Link ===== */
+.demo-detail-link {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.demo-detail-link a {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.demo-detail-link a i {
+  margin-right: 0.3rem;
+  font-size: 0.8rem;
+}
+
+/* ===== Sub-page Elements ===== */
+.back-link {
+  margin-bottom: 0.5rem;
+}
+
+.back-link a {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+.back-link a:hover {
+  color: var(--accent);
+}
+
+.back-link a i {
+  margin-right: 0.3rem;
+}
+
+.page-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.3rem;
+}
+
+.page-subtitle {
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  max-width: 720px;
+}
+
+.table-wrapper {
+  margin-top: 0.8rem;
+  overflow-x: auto;
+}
+
+.phase-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+
+.phase-table th,
+.phase-table td {
+  text-align: left;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.phase-table thead th {
+  font-weight: 700;
+  color: var(--text);
+  background: var(--bg-alt);
+  border-bottom: 2px solid var(--border);
+}
+
+.phase-table tbody td {
+  color: var(--text-secondary);
+}
+
+.phase-table tbody tr:last-child td {
+  font-weight: 600;
+  color: var(--accent-dark);
+}
+
 /* ===== Pipeline Explanation ===== */
 .pipeline-explain {
   margin-top: 2.5rem;
